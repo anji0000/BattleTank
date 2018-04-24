@@ -2,6 +2,7 @@
 #include "Tank.h"
 #include "BattleTank.h"
 #include "TankAimingComponent.h"
+#include "TankMovementComponent.h"
 #include "TankBarrel.h"
 #include "Projectile.h"
 #include "Runtime/CoreUObject/Public/UObject/UObjectGlobals.h"
