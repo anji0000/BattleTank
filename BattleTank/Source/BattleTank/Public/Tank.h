@@ -7,8 +7,6 @@
 #include "Tank.generated.h" // put new includes above
 
 class UTankBarrel;
-class UTankAimingComponent;
-class UTankMovementComponent;
 class AProjectile;
 
 UCLASS()
@@ -24,15 +22,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadOnly)
-	UTankAimingComponent* TankAimingComponent = nullptr;
-
-	UPROPERTY(BlueprintReadOnly)
-	UTankMovementComponent* TankMovementComponent = nullptr;
-
-public:	
-	void AimAt(FVector HitLocation);
-	
+public:
 	UFUNCTION(BlueprintCallable)
 	void Fire();
 	
