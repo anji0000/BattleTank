@@ -7,8 +7,6 @@
 #include "Runtime/Engine/Classes/GameFramework/Controller.h"
 #include "TankAIController.generated.h"
 
-class ATank;
-
 /**
  * 
  */
@@ -20,9 +18,13 @@ class BATTLETANK_API ATankAIController : public AAIController
 public:
 	void BeginPlay() override;
 
+protected:
+	// How close the AI tank can get to the player
+	UPROPERTY(EditDefaultsOnly, Category = "Setup") 
+	float AcceptanceRadius = 8000;
+
 private:
 	void Tick(float DeltaTime) override;
 
-	// How close the AI tank can get to the player
-	float AcceptanceRadius = 3000;
+	
 };
