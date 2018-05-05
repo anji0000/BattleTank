@@ -2,6 +2,7 @@
 
 #include "TankAIController.h"
 #include "Runtime/Engine/Classes/GameFramework/Actor.h"
+#include "Engine/World.h"
 #include "TankAimingComponent.h"
 #include "BattleTank.h"
 

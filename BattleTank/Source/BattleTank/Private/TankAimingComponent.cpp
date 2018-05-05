@@ -5,6 +5,7 @@
 #include "TankBarrel.h"
 #include "TankTurret.h"
 #include "Projectile.h"
+#include "Engine/World.h"
 #include "BattleTank.h"
 
 // Sets default values for this component's properties
@@ -123,7 +124,7 @@ EFiringState UTankAimingComponent::GetFiringState() const
 	return FiringState;
 }
 
-int UTankAimingComponent::GetRoundsLeft() const
+int32 UTankAimingComponent::GetRoundsLeft() const
 {
 	return RoundsLeft;
 }
