@@ -20,6 +20,11 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 public:
 	void BeginPlay() override;
 	
+	void SetPawn(APawn * InPawn);
+
+	UFUNCTION()
+	void OnPossessedTankDeath();
+
 	void Tick(float DeltaTime) override;
 
 protected:
