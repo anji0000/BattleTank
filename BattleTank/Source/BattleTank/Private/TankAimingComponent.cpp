@@ -23,9 +23,9 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	if (RoundsLeft <= 0)
 	{
 		FiringState = EFiringState::OutOfAmmo;
-		if ((LastFireTime + AmmoRefillTimeInSeconds) >= FPlatformTime::Seconds())
+		if ((LastEmptyTime + AmmoRefillTimeInSeconds) <= FPlatformTime::Seconds())
 		{
-
+			RoundsLeft = StartingRounds;
 		}
 	}
 	else if (bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) < ReloadTimeInSeconds)
@@ -55,13 +55,13 @@ void UTankAimingComponent::BeginPlay()
 }
 
 bool UTankAimingComponent::IsBarrelMoving() {
-	if (!ensure(Barrel)) { return false; }
+	if (!Barrel) { return false; }
 	auto BarrelForward = Barrel->GetForwardVector();
 	return !BarrelForward.Equals(AimDirection, 0.01);
 }
 
 void UTankAimingComponent::AimAt(FVector HitLocation) {
-	if (!ensure(Barrel)) { return; }
+	if (!Barrel) { return; }
 
 	FVector OutLaunchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
@@ -85,7 +85,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation) {
 }
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection) {
-	if (!ensure(Barrel && Turret)) { return; }
+	if (!(Barrel && Turret)) { return; }
 	// work-out difference between current barrel rotation, and AimDirection
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
@@ -107,9 +107,11 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection) {
 void UTankAimingComponent::Fire() {
 	if (FiringState == EFiringState::Aiming || FiringState == EFiringState::Locked) 
 	{
+		UE_LOG(LogTemp, Warning, TEXT("RoundsLeft: %i"), RoundsLeft)
+		
 		// Spawn a projectile at the socket location on the barrel
-		if (!ensure(Barrel)) { return; }
-		if (!ensure(ProjectileBlueprint)) { return; }
+		if (!Barrel) { return; }
+		if (!ProjectileBlueprint) { return; }
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
 			Barrel->GetSocketLocation(FName("Projectile")),
@@ -118,11 +120,11 @@ void UTankAimingComponent::Fire() {
 
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();
-		RoundsLeft--;
-		if (RoundsLeft <= 0)
+		if (RoundsLeft == 1)
 		{
-			LastFireTime = FPlatformTime::Seconds();
+			LastEmptyTime = FPlatformTime::Seconds();
 		}
+		RoundsLeft--;
 	}
 }
 

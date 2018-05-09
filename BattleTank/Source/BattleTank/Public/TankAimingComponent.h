@@ -72,11 +72,14 @@ private:
 	float ReloadTimeInSeconds = 3;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	int32 RoundsLeft = 3;
+	int32 StartingRounds = 3;
 
 	// Ammo will refill after being empty this amount of time
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float AmmoRefillTimeInSeconds = 10;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	int32 RoundsLeft = StartingRounds;
 
 	double LastEmptyTime = 0;
 

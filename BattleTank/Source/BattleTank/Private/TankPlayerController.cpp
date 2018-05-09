@@ -12,7 +12,7 @@ void ATankPlayerController::SetPawn(APawn* InPawn)
 	if (InPawn)
 	{
 		auto PossessedTank = Cast<ATank>(InPawn);
-		if (!ensure(PossessedTank)) { return; }
+		if (!PossessedTank) { return; }
 
 		PossessedTank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnPossessedTankDeath);
 	}
@@ -26,7 +26,7 @@ void ATankPlayerController::OnPossessedTankDeath()
 void ATankPlayerController::BeginPlay() {
 	Super::BeginPlay();
 	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
-	if (!ensure(AimingComponent)) { return; }
+	if (!AimingComponent) { return; }
 	FoundAimingComponent(AimingComponent);
 }
 
@@ -40,7 +40,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 {
 	if (!GetPawn()) { return; }
 	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
-	if (!ensure(AimingComponent)) { return; }
+	if (!AimingComponent) { return; }
 
 	FVector HitLocation; // OUT parameter
 	bool bGotHitLocation = GetSightRayHitLocation(HitLocation);
